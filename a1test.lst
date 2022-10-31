@@ -1,0 +1,120 @@
+LCC Assemble/Link/Interpret/Debug Ver 5.7  Tue Oct 18 19:19:23 2022
+lgp
+
+Header
+o
+C
+
+Loc   Code           Source Code
+           ; a1test.a
+0000  e04e s:        lea r0, c6
+0001  304f           st r0, ac6
+0002  e04d           lea r0, c7
+0003  304e           st r0, ac7
+0004  2015           ld r0, x
+0005  f002           dout           ; 1   (dout equivalent to dout 
+0006  f001           nl
+0007  1000           add r0, r0, r0
+0008  f002           dout           ; 2
+0009  f001           nl
+000a  1021           add r0, r0, 1
+000b  f002           dout           ; 3
+000c  f001           nl 
+000d  1023           add r0, r0, 3
+000e  5024           and r0, r0, 4
+000f  f002           dout           ; 4
+0010  f001           nl
+0011  0e01           br L1
+0012  f000           halt
+           L1:       
+0013  0601           brp L2
+0014  f000           halt
+           L2:        
+           ABC:
+0015  1220           add r1, r0, 0
+0016  9240           not r1, r1
+0017  0401           brn L3
+0018  f000           halt
+0019  0e01 L3:       br L4 
+001a  0001 x:        .word 1
+001b  54a0 L4:       and r2, r2, 0
+001c  0004           brz L5
+001d  f000           halt
+001e  0000           .zero 3
+001f  0000
+0020  0000
+0021  e602 L5:       lea r3, L6
+0022  c0c0           jmp r3
+0023  f000           halt
+0024  4820 L6:       bl r1sub      ; 5
+0025  e825           lea r4, r2sub
+0026  4100           blr r4        ; 6
+0027  202a           ld r0, ac7
+0028  6000           ldr r0, r0, 0
+0029  f002           dout           ; 7
+002a  f001           nl
+002b  e823           lea r4, c6
+002c  6104           ldr r0, r4, 4
+002d  f002           dout           ; 8
+002e  f001           nl
+002f  2a1a           ld  r5, minus
+0030  9140           not r0, r5 
+0031  f002           dout           ; -9
+0032  f001           nl
+0033  103f           add r0, r0, -1
+0034  301f           st r0, save
+0035  201e           ld r0, save
+0036  f002           dout           ; -10
+0037  f001           nl
+0038  103f           add r0, r0, -1
+0039  2218           ld r1, ac7
+003a  7040           str r0, r1, 0
+003b  2014           ld  r0, c7
+003c  f002           dout           ; -11
+003d  f001           nl
+003e  103f           add r0, r0, -1
+003f  e214           lea r1, save
+0040  7041           str r0, r1, 1
+0041  2013           ld  r0, save2
+0042  f002           dout           ; -12
+0043  f001           nl
+0044  f000           halt
+                     ; hello
+
+0045  2003 r1sub:    ld r0, c5
+0046  f002           dout           ; 5
+0047  f001           nl
+0048  c1c0           ret
+0049  0005 c5:       .word 5
+004a  0008 minus:    .word 8
+004b  2003 r2sub:    ld r0, c6
+004c  f002           dout
+004d  f001           nl
+004e  c1c0           ret
+004f  0006 c6:       .word 6        ; .word equivalent to .fill
+0050  0007 c7:       .word 7
+0051  0000 ac6:      .word 0          
+0052  0000 ac7:      .word 0
+0053  0008 c8:       .word 8
+0054  fffb save:     .word -5
+0055  0064 save2:    .word 100
+====================================================== Output
+1
+2
+3
+4
+5
+6
+7
+8
+-9
+-10
+-11
+-12
+
+========================================== Program statistics
+Input file name       =      a1test.a
+Instructions executed =   44 (hex)    68 (dec)
+Program size          =   56 (hex)    86 (dec)
+Max stack size        =    0 (hex)     0 (dec)
+Load point            =    0 (hex)     0 (dec)
